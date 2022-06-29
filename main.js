@@ -247,15 +247,6 @@ git.name = 'gitcube';
 git.position.set(-24,-23,20);
 scene.add( git);
 
-//Thanks TORUS
-const torusKnot = new THREE.Mesh( 
-	new THREE.TorusKnotGeometry( 10, 3, 100, 16 ),
-	new THREE.MeshBasicMaterial( { color: 0xdb2342 } ) 
-	);
-torusKnot.position.set(-20,-40,10);
-torusKnot.name = 'THX_T';
-scene.add( torusKnot );
-
 function getRandomInt(max) {
 	return Math.floor(Math.random() * max);
 };

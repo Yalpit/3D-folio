@@ -7,7 +7,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "vite build",
-    "github": "vite build --base=/3D-folio/"
+    "github": "vite build"
   },
   "devDependencies": {
     "vite": "^2.9.9"

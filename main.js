@@ -2,18 +2,6 @@ import './style.css'
 
 import * as THREE from 'three'
 
-// var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-// if (!isChrome){
-// 	$('#iframeAudio').remove()
-// }
-// else {
-// 	$('#playAudio').remove() // just to make sure that it will not have 2x audio in the background 
-// }
-
-// function setHalfVolume() {
-//     var myAudio = document.getElementById("playAudio");  
-//     myAudio.volume = 0.5; //Changed this to 0.5 or 50% volume since the function is called Set Half Volume ;)
-// }
 /*
               ,---,                                                                                                                      
            ,`--.' |                                                                                                                      
@@ -198,19 +186,19 @@ class MouseMeshInteraction {
                                                                                                                                          
 */
 
-const scene = new THREE.Scene()
-
+//SETUP
+const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000);
-
 const renderer = new THREE.WebGL1Renderer({
 	canvas: document.querySelector('#bg'),
 });
-
 renderer.setPixelRatio( window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-//Le premier tétraèdre
+//Le premier tétraèdre et les lumières rouge et bleu
+//Bleu
 const pointLighttera = new THREE.PointLight( 0x0366fc ); 
+//Rouge
 const pointLighttera2 = new THREE.PointLight( 0xfc0b03 ); 
 // const lightHelper = new THREE.PointLightHelper(pointLighttera);
 // const lightHelper2 = new THREE.PointLightHelper(pointLighttera2);
@@ -219,11 +207,35 @@ const tetra = new THREE.Mesh(
 	new THREE.TetrahedronGeometry(5,0),
 	new THREE.MeshStandardMaterial( {color: 0xffffff})
 	);
-
+tetra.name = 'Tetra';
 pointLighttera.position.set(20,5,-15);
-pointLighttera2.position.set(0,-10,-25);
+pointLighttera2.position.set(1,-10,-25);
 tetra.position.set(15,0,-20);
 scene.add( pointLighttera, pointLighttera2,tetra );
+
+// //Separation cube
+// const cube_block = new THREE.Mesh(
+// 	new THREE.BoxGeometry(30,30,30),
+// 	new THREE.MeshBasicMaterial()
+// 	); 
+// cube_block.position.set(15,0,-20);
+// scene.add(cube_block);
+
+//Social Octoedron
+const LKIN_Texture = new THREE.TextureLoader().load('LinkedIn_logo_initials.png');
+const SocialOcto = new THREE.Mesh(
+	new THREE.BoxGeometry(1,1,1),
+	new THREE.MeshBasicMaterial({map:LKIN_Texture})
+	);
+SocialOcto.name = 'SocialOcto';
+SocialOcto.position.set(-10,-6,1);
+scene.add(SocialOcto);
+
+// const pointLight_octo = new THREE.PointLight( 0x4287f5);
+// pointLight_octo.position.set(-12,-6,3);
+// const lightHelper_octo = new THREE.PointLightHelper(pointLight_octo);
+// scene.add(lightHelper_octo);
+// scene.add( pointLight_octo );
 
 //Github's cube
 const gitcubeTexture = new THREE.TextureLoader().load('logo-github.png');
@@ -232,19 +244,21 @@ const git = new THREE.Mesh(
 	new THREE.MeshBasicMaterial( {map:gitcubeTexture} ) 
 	);
 git.name = 'gitcube';
-git.position.set(-23,-22,20);
+git.position.set(-24,-23,20);
 scene.add( git);
 
 //Thanks TORUS
-const geometry = new THREE.TorusKnotGeometry( 10, 3, 100, 16 );
-const material = new THREE.MeshBasicMaterial( { color: randomcolors() } );
-const torusKnot = new THREE.Mesh( geometry, material );
+const torusKnot = new THREE.Mesh( 
+	new THREE.TorusKnotGeometry( 10, 3, 100, 16 ),
+	new THREE.MeshBasicMaterial( { color: 0xdb2342 } ) 
+	);
 torusKnot.position.set(-20,-40,10);
+torusKnot.name = 'THX_T';
 scene.add( torusKnot );
 
 function getRandomInt(max) {
 	return Math.floor(Math.random() * max);
-}
+};
 
 function randomcolors(){
 	var rand_number = getRandomInt(16777216);
@@ -253,7 +267,7 @@ function randomcolors(){
 
 function addStar(){
 	const geometryStar = new THREE.SphereGeometry( 0.25, 24, 24);
-	const materialStar = new THREE.MeshStandardMaterial({color: randomcolors()});
+	const materialStar = new THREE.MeshBasicMaterial({color: randomcolors()});
 	const star = new THREE.Mesh(geometryStar, materialStar);
 
 	const [x,y,z] = Array(3).fill().map(()=>THREE.MathUtils.randFloatSpread(500));
@@ -273,11 +287,28 @@ function moveCamera(){
 
 
 //Thanks to : Daniel Blagy
+//LINK to GitHub
 const mmi = new MouseMeshInteraction(scene, camera);
 mmi.addHandler('gitcube','click',function(){
 	console.log("gitcube clicked!");
-	window.open('https://github.com/Yalpit', '_blank');
+	window.open('https://github.com/Yalpit?tab=repositories', '_blank');
 	// window.location.href = "https://github.com/Yalpit";
+})
+
+//LINK to linkedIn
+const mmiLink = new MouseMeshInteraction(scene, camera);
+mmiLink.addHandler('SocialOcto','click',function(){
+	console.log("Linkedin clicked!");
+	window.open('https://www.linkedin.com/in/charles-damaggio-297934243/?trk=public-profile-join-page', '_blank');
+	// window.location.href = "https://github.com/Yalpit";
+})
+
+//Sound of the Tetraedron
+var audio = new Audio('stonk sound effect.mp3');
+const mmiTetra = new MouseMeshInteraction(scene, camera);
+mmiLink.addHandler('Tetra','click',function(){
+	console.log("Terahedron clicked!");
+	audio.play();
 })
 
 document.body.onscroll = moveCamera;
@@ -286,20 +317,16 @@ Array(2000).fill().forEach(addStar);
 function animate() {
 	requestAnimationFrame( animate );
 
-	// raycaster.setFromCamera(pointer, camera);
-	
-	// const intersects = raycaster.intersectObjects(scene.children);
-
 	mmi.update();
+	mmiLink.update();
+	mmiTetra.update();
 
 	tetra.rotation.x += 0.02;
 	tetra.rotation.y += 0.02;
 
 	git.rotation.y += 0.01;
-
-	// mesh.rotation.x += 0.01;
-	// mesh.rotation.y += 0.01;
-	// mesh.rotation.z += 0.01;
+	SocialOcto.rotation.z += 0.01;
+	SocialOcto.rotation.x += 0.01;
 
 	renderer.render( scene, camera );
 

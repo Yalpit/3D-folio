@@ -232,7 +232,7 @@ const git = new THREE.Mesh(
 	new THREE.MeshBasicMaterial( {map:gitcubeTexture} ) 
 	);
 git.name = 'gitcube';
-git.position.set(-12,-15,11);
+git.position.set(-23,-22,20);
 scene.add( git);
 
 //Thanks TORUS

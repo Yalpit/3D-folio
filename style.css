@@ -74,6 +74,14 @@ canvas {
     line-height: 1;
   }
 
+  .Projets{
+	grid-column: 8/12;
+  }
+
+  .sous-titre{
+	grid-column: 8/12;
+  }
+
   .Apropos {
     grid-column: 6 / 12;
   }

@@ -1,6 +1,6 @@
-import './style.css'
+import './style.css';
 
-import * as THREE from 'three'
+import * as THREE from 'three';
 
 /*
               ,---,                                                                                                                      
@@ -293,7 +293,7 @@ mmi.addHandler('gitcube','click',function(){
 	console.log("gitcube clicked!");
 	window.open('https://github.com/Yalpit?tab=repositories', '_blank');
 	// window.location.href = "https://github.com/Yalpit";
-})
+});
 
 //LINK to linkedIn
 const mmiLink = new MouseMeshInteraction(scene, camera);
@@ -301,7 +301,7 @@ mmiLink.addHandler('SocialOcto','click',function(){
 	console.log("Linkedin clicked!");
 	window.open('https://www.linkedin.com/in/charles-damaggio-297934243/?trk=public-profile-join-page', '_blank');
 	// window.location.href = "https://github.com/Yalpit";
-})
+});
 
 //Sound of the Tetraedron
 var audio = new Audio('stonk sound effect.mp3');
@@ -309,7 +309,7 @@ const mmiTetra = new MouseMeshInteraction(scene, camera);
 mmiLink.addHandler('Tetra','click',function(){
 	console.log("Terahedron clicked!");
 	audio.play();
-})
+});
 
 document.body.onscroll = moveCamera;
 Array(2000).fill().forEach(addStar);
